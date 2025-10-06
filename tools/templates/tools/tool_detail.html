@@ -1,0 +1,941 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Discover {{ tool.name }} - {{ tool.pricing }} {{ tool.category }} AI tool. {{ tool.description|truncatewords:25 }}. Expert reviews, features, pricing, user ratings, and detailed information.">
+    <meta name="keywords" content="{{ tool.name }}, {{ tool.category }} AI tools, {{ tool.pricing }} tools, AI software, {{ tool.tags|default:'' }}, tool reviews, AI productivity, artificial intelligence tools">
+    <meta name="author" content="Latest Ai Tools">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="General">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="{{ tool.name }} - Latest Ai Tools">
+    <meta property="og:description" content="{{ tool.description|truncatewords:30 }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="https://shauryabaycket345321.s3.eu-north-1.amazonaws.com/Logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ tool.name }} - Latest Ai Tools">
+    <meta name="twitter:description" content="{{ tool.description|truncatewords:30 }}">
+    <meta name="twitter:image" content="{% if tool.image %}{{ tool.image.url }}{% else %}{% static 'images/default-tool.jpg' %}{% endif %}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <title>{{ tool.name }} - {{ tool.pricing }} {{ tool.category }} AI Tool | Latest Ai Tools</title>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "{{ tool.name }}",
+        "description": "{{ tool.description }}",
+        "applicationCategory": "{{ tool.category }}",
+        "operatingSystem": "Web, Mobile",
+        "offers": {
+            "@type": "Offer",
+            "price": "{% if tool.pricing == 'Free' %}0{% elif tool.pricing == 'Premium' %}29{% else %}0{% endif %}",
+            "priceCurrency": "USD",
+            "priceValidUntil": "2025-12-31",
+            "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "{{ tool.upvotes }}"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "Latest Ai Tools"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Latest Ai Tools",
+            "url": "https://latestaitoolz.com"
+        },
+        "url": "{{ request.build_absolute_uri }}",
+        "image": "{% if tool.image %}{{ tool.image.url }}{% else %}https://shauryabaycket345321.s3.eu-north-1.amazonaws.com/Logo.png{% endif %}",
+        "datePublished": "{{ tool.created_at|date:'Y-m-d' }}",
+        "dateModified": "{{ tool.updated_at|date:'Y-m-d' }}"
+    }
+    </script>
+    
+    <!-- Breadcrumb Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "{% url 'tools:list' %}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{{ tool.category }}",
+                "item": "{% url 'tools:list' %}?category={{ tool.category }}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "{{ tool.name }}",
+                "item": "{{ request.build_absolute_uri }}"
+            }
+        ]
+    }
+    </script>
+    <!-- Critical CSS for above-the-fold content -->
+    <style>
+        :root {
+            --primary-color: #1a2a6c;
+            --secondary-color: #2c3e50;
+            --accent-color: #e94560;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #fff;
+            --nav-bg: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            --hero-bg: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Critical navbar styles */
+        nav {
+            background: var(--nav-bg);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            color: white;
+            font-weight: 500;
+        }
+        
+        /* Critical hero styles */
+        .hero {
+            background: var(--hero-bg);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tool-visit-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #28a745;
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/tool-detail.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for non-JS users -->
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+        <link rel="stylesheet" href="{% static 'css/tool-detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    
+    <link rel="icon" href="https://shauryabaycket345321.s3.eu-north-1.amazonaws.com/Logo.png" type="image/x-icon">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+    <div class="container nav-container">
+        <div class="logo">
+            <div class="logo-icon">AI</div>
+            <span>Latest Ai Tools</span>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'tools:list' %}">Home</a>
+            <a href="{% url 'submit' %}">Submit Tool</a>
+            <a href="{% url 'aboutus' %}">About</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- Breadcrumb -->
+<div class="container">
+    <div class="breadcrumb">
+        <a href="{% url 'tools:list' %}">Home</a>
+        <span>></span>
+        <a href="?category={{ tool.category }}">{{ tool.category }}</a>
+        <span>></span>
+        <span>{{ tool.name }}</span>
+    </div>
+</div>
+
+<!-- Hero / Tool Header -->
+<section class="hero">
+    <div class="container">
+        <h1>{{ tool.name }}</h1>
+        <p>{{ tool.description }}</p>
+        <div class="hero-actions">
+            <a href="{{ tool.website }}" target="_blank" class="tool-visit-btn">
+                <i class="fas fa-external-link-alt"></i> Visit Website
+            </a>
+            <button class="share-btn" onclick="shareTool()">
+                <i class="fas fa-share-alt"></i> Share
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Tool Details Section -->
+<section class="tool-details">
+    <div class="container">
+        <div class="tool-container">
+            <!-- Left Column: Screenshots / Images -->
+            <div class="tool-image">
+                {% if tool.image %}
+                <img src="{{ tool.image.url }}" alt="{{ tool.name }}">
+                {% else %}
+                <div style="width:100%; height:300px; background:var(--form-bg); border-radius:12px; display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-tools" style="font-size:3rem; color:var(--text-color); opacity:0.5;"></i>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Right Column: Info -->
+            <div class="tool-info">
+                <h2>Tool Information</h2>
+                
+                <div class="info-item">
+                    <label>Pricing:</label>
+                    <span class="pricing-label {{ tool.pricing }}">{{ tool.pricing }}</span>
+                </div>
+                
+                <div class="info-item">
+                    <label>Category:</label>
+                    <span>{{ tool.category }}</span>
+                </div>
+                
+                <div class="info-item">
+                    <label>Tags:</label>
+                    <span>{{ tool.tags|default:"None" }}</span>
+                </div>
+                
+                <div class="info-item">
+                    <label>Upvotes:</label>
+                    <span id="upvotes-{{ tool.id }}">{{ tool.upvotes }}</span>
+            
+
+        <!-- Detailed Description -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">About {{ tool.name }}</h2>
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <p>{{ tool.long_description|linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What is {{ tool.name }}?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>{{ tool.name }} is a {{ tool.pricing|lower }} {{ tool.category|lower }} AI tool that {{ tool.description|truncatewords:30 }}. It helps users enhance their productivity and workflow efficiency.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>How much does {{ tool.name }} cost?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>{{ tool.name }} offers a {{ tool.pricing|lower }} pricing model. {% if tool.pricing == 'Free' %}You can use all basic features without any cost.{% elif tool.pricing == 'Premium' %}Premium plans start at $29/month with advanced features.{% else %}Free tier available with premium upgrades starting at $19/month.{% endif %}</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What features does {{ tool.name }} offer?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>{{ tool.name }} provides comprehensive {{ tool.category|lower }} features including automation, analytics, collaboration tools, and integrations with popular platforms. The exact feature set depends on your chosen plan.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Is {{ tool.name }} secure?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, {{ tool.name }} implements enterprise-grade security measures including data encryption, secure cloud storage, and compliance with GDPR and other privacy regulations. Your data is protected with bank-level security.</p>
+                        </div>
+                    </div>
+                    {% if tool.faqs.exists %}
+                    {% for faq in tool.faqs.all %}
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>{{ faq.question }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>{{ faq.answer }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Structured Data -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "What is {{ tool.name }}?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "{{ tool.name }} is a {{ tool.pricing|lower }} {{ tool.category|lower }} AI tool that {{ tool.description|truncatewords:30 }}. It helps users enhance their productivity and workflow efficiency."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How much does {{ tool.name }} cost?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "{{ tool.name }} offers a {{ tool.pricing|lower }} pricing model. {% if tool.pricing == 'Free' %}You can use all basic features without any cost.{% elif tool.pricing == 'Premium' %}Premium plans start at $29/month with advanced features.{% else %}Free tier available with premium upgrades starting at $19/month.{% endif %}"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What features does {{ tool.name }} offer?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "{{ tool.name }} provides comprehensive {{ tool.category|lower }} features including automation, analytics, collaboration tools, and integrations with popular platforms. The exact feature set depends on your chosen plan."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Is {{ tool.name }} secure?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, {{ tool.name }} implements enterprise-grade security measures including data encryption, secure cloud storage, and compliance with GDPR and other privacy regulations. Your data is protected with bank-level security."
+                    }
+                }
+            ]
+        }
+        </script>
+
+        <!-- Reviews Section -->
+        {% if tool.reviews.exists %}
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">User Reviews</h2>
+                <div class="reviews-container">
+                    {% for review in tool.reviews.all %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="{{ review.user.profile.avatar.url|default:'https://via.placeholder.com/50' }}" alt="{{ review.user.username }}" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <h4>{{ review.user.username }}</h4>
+                                <p>{{ review.created_at|date:"F j, Y" }}</p>
+                            </div>
+                            <div class="rating">
+                                {% for i in "12345" %}
+                                    {% if i|add:0 <= review.rating %}
+                                        <i class="fas fa-star"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <p>{{ review.comment }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Use Cases Section -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Popular Use Cases</h2>
+                <div class="use-cases-grid">
+                    <div class="use-case-card">
+                        <div class="use-case-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Productivity Enhancement</h3>
+                        <p>Streamline your workflow and boost productivity with {{ tool.name }}'s powerful automation features. Perfect for professionals looking to optimize their daily tasks.</p>
+                    </div>
+                    <div class="use-case-card">
+                        <div class="use-case-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Team Collaboration</h3>
+                        <p>Enhance team communication and project management with {{ tool.name }}. Ideal for remote teams and collaborative projects.</p>
+                    </div>
+                    <div class="use-case-card">
+                        <div class="use-case-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Data Analysis</h3>
+                        <p>Leverage {{ tool.name }}'s advanced analytics to gain valuable insights from your data and make informed business decisions.</p>
+                    </div>
+                    <div class="use-case-card">
+                        <div class="use-case-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3>Creative Projects</h3>
+                        <p>Unleash your creativity with {{ tool.name }}'s innovative design tools and creative features for artists and designers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Plans Section -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Pricing Plans</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Free Plan</h3>
+                            <div class="price">$0<span>/month</span></div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Basic features access</li>
+                            <li><i class="fas fa-check"></i> Limited usage per month</li>
+                            <li><i class="fas fa-check"></i> Community support</li>
+                            <li><i class="fas fa-check"></i> Standard templates</li>
+                        </ul>
+                        <a href="{{ tool.website }}" target="_blank" class="pricing-btn">Get Started</a>
+                    </div>
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3>Pro Plan</h3>
+                            <div class="price">$29<span>/month</span></div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> All basic features</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-check"></i> Custom integrations</li>
+                            <li><i class="fas fa-check"></i> API access</li>
+                        </ul>
+                        <a href="{{ tool.website }}" target="_blank" class="pricing-btn">Start Free Trial</a>
+                    </div>
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Enterprise</h3>
+                            <div class="price">Custom<span>/month</span></div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Everything in Pro</li>
+                            <li><i class="fas fa-check"></i> White-label solution</li>
+                            <li><i class="fas fa-check"></i> Dedicated support</li>
+                            <li><i class="fas fa-check"></i> Custom development</li>
+                            <li><i class="fas fa-check"></i> SLA guarantee</li>
+                        </ul>
+                        <a href="{{ tool.website }}" target="_blank" class="pricing-btn">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started Section -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Getting Started with {{ tool.name }}</h2>
+                <div class="getting-started">
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Sign Up</h3>
+                                <p>Create your account in just a few clicks. No credit card required for the free plan.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Complete Setup</h3>
+                                <p>Follow our guided setup process to configure {{ tool.name }} according to your needs.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Start Creating</h3>
+                                <p>Begin using {{ tool.name }}'s powerful features to enhance your workflow and productivity.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>Scale & Optimize</h3>
+                                <p>Explore advanced features and integrations as your needs grow.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Industry Statistics Section -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Why Choose {{ tool.name }}?</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-number">4.8</div>
+                        <div class="stat-label">User Rating</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integration Section -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Integrations & Compatibility</h2>
+                <div class="integrations">
+                    <div class="integration-text">
+                        <h3>Seamless Integration</h3>
+                        <p>{{ tool.name }} integrates seamlessly with your existing workflow and popular tools. Connect with over 100+ apps and services to maximize your productivity.</p>
+                    </div>
+                    <div class="integration-logos">
+                        <div class="integration-logo">
+                            <i class="fab fa-slack"></i>
+                            <span>Slack</span>
+                        </div>
+                        <div class="integration-logo">
+                            <i class="fab fa-google"></i>
+                            <span>Google Workspace</span>
+                        </div>
+                        <div class="integration-logo">
+                            <i class="fab fa-microsoft"></i>
+                            <span>Microsoft 365</span>
+                        </div>
+                        <div class="integration-logo">
+                            <i class="fab fa-trello"></i>
+                            <span>Trello</span>
+                        </div>
+                        <div class="integration-logo">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </div>
+                        <div class="integration-logo">
+                            <i class="fab fa-figma"></i>
+                            <span>Figma</span>
+                        </div>
+                        <div class="integration-logo">
+                            <i class="fab fa-shopify"></i>
+                            <span>Shopify</span>
+                        </div>
+                        <div class="integration-logo">
+                            <i class="fas fa-plus"></i>
+                            <span>100+ More</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security & Privacy Section -->
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Security & Privacy</h2>
+                <div class="security-grid">
+                    <div class="security-card">
+                        <div class="security-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Enterprise-Grade Security</h3>
+                        <p>Your data is protected with bank-level encryption and advanced security measures.</p>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Data Privacy</h3>
+                        <p>We follow strict privacy policies and comply with GDPR, CCPA, and other regulations.</p>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <h3>Secure Cloud Storage</h3>
+                        <p>Your files are stored in secure, encrypted cloud storage with regular backups.</p>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3>Compliance</h3>
+                        <p>Certified with SOC 2, ISO 27001, and other industry-standard compliance certifications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Tools -->
+        {% if related_tools %}
+        <div class="content-section">
+            <div class="container">
+                <h2 class="section-title">Related Tools</h2>
+                <div class="related-tools">
+                    {% for rtool in related_tools %}
+                    <div class="related-tool-card">
+                        <div class="related-tool-image">
+                            {% if rtool.image %}
+                                <img src="{{ rtool.image.url }}" alt="{{ rtool.name }}">
+                            {% else %}
+                                <div style="width:100%; height:100%; background:var(--form-bg); display:flex;align-items:center;justify-content:center;">
+                                    <i class="fas fa-tools" style="font-size:2rem; color:var(--text-color); opacity:0.5;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="related-tool-content">
+                            <h3>{{ rtool.name }}</h3>
+                            <p>{{ rtool.description|truncatewords:15 }}</p>
+                            <div class="related-tool-meta">
+                                <span class="pricing-label {{ rtool.pricing }}">{{ rtool.pricing }}</span>
+                                <span class="upvotes"><i class="fas fa-thumbs-up"></i> {{ rtool.upvotes }}</span>
+                            </div>
+                            <a href="{% url 'tools:detail' rtool.id %}">View Details</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>About Latest Ai Tools</h3>
+                <p>Latest Ai Tools is the leading directory for discovering and evaluating artificial intelligence tools across all industries.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'tools:list' %}">Home</a></li>
+                    <li><a href="{% url 'submit' %}">Submit a Tool</a></li>
+                    <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Popular Categories</h3>
+                <ul>
+                    <li><a href="?category=Productivity">Productivity</a></li>
+                    <li><a href="?category=Marketing">Marketing</a></li>
+                    <li><a href="?category=Design">Design</a></li>
+                    <li><a href="?category=Development">Development</a></li>
+                    <li><a href="?category=Writing">Writing</a></li>
+                    <li><a href="?category=Education">Education</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to get updates on new AI tools and industry trends.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Latest Ai Tools. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Cookie Policy</a></p>
+        </div>
+    </div>
+</footer>
+
+<script>
+// Mobile menu toggle
+const hamburger = document.querySelector('.hamburger');
+const navLinks = document.querySelector('.nav-links');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+
+// Theme toggle
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+const icon = themeToggle.querySelector('i');
+
+// Check for saved theme preference or default to light mode
+const currentTheme = localStorage.getItem('theme') || 'light';
+if (currentTheme === 'dark') {
+    body.setAttribute('data-theme', 'dark');
+    icon.classList.remove('fa-moon');
+    icon.classList.add('fa-sun');
+}
+
+themeToggle.addEventListener('click', () => {
+    if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+    } else {
+        body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+});
+
+// FAQ toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const faqItem = question.parentElement;
+            faqItem.classList.toggle('active');
+        });
+    });
+});
+
+// Share functionality
+function shareTool() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ tool.name }}',
+            text: '{{ tool.description|truncatewords:20 }}',
+            url: window.location.href
+        });
+    } else {
+        // Fallback for browsers that don't support Web Share API
+        const dummy = document.createElement('input');
+        document.body.appendChild(dummy);
+        dummy.value = window.location.href;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        
+        // Show notification
+        const notification = document.createElement('div');
+        notification.textContent = 'Link copied to clipboard!';
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.padding = '10px 20px';
+        notification.style.backgroundColor = 'var(--accent-color)';
+        notification.style.color = 'white';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 2000);
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i=0; i<cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function upvote(toolId) {
+    const upvoteBtn = document.getElementById('upvote-btn-' + toolId);
+    
+    fetch("{% url 'tools:upvote' 0 %}".replace('0', toolId), {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            document.getElementById('upvotes-' + toolId).innerText = data.upvotes;
+            upvoteBtn.classList.add('upvoted');
+            upvoteBtn.innerHTML = '<i class="fas fa-check"></i> Upvoted';
+            upvoteBtn.disabled = true;
+        }
+    });
+}
+</script>
+
+</body>
+</html>

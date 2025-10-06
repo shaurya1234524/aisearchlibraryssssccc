@@ -1,0 +1,690 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Learn about Latest Ai Tools, our mission, vision, and how we help users discover the best AI tools, apps, and software.">
+    <meta name="keywords" content="About Latest Ai Tools, AI tools, software, productivity apps, AI tools discovery, AI tools upvotes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Latest Ai Tools">
+    <meta property="og:title" content="About Us - Latest Ai Tools">
+    <meta property="og:description" content="Discover our mission, vision, and how Latest Ai Tools helps users find the best AI tools and software for their needs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% static 'images/og-image.jpg' %}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About Us - Latest Ai Tools">
+    <meta name="twitter:description" content="Discover our mission, vision, and how Latest Ai Tools helps users find the best AI tools and software for their needs.">
+    <meta name="twitter:image" content="{% static 'images/og-image.jpg' %}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <title>About Us - Latest Ai Tools | Discover Our Mission & Vision</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navbar Styles */
+        nav {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #e94560;
+            border-radius: 8px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #e94560;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #e94560;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* About Section */
+        .about-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .about-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+        }
+        
+        .about-container h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a2a6c;
+            font-size: 2.5rem;
+            position: relative;
+        }
+        
+        .about-container h1::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+        }
+        
+        .about-container h2 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #1a2a6c;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .about-container h2 i {
+            margin-right: 15px;
+            color: #e94560;
+        }
+        
+        .about-container p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #555;
+            text-align: justify;
+        }
+        
+        .feature-list {
+            margin: 25px 0;
+            padding-left: 20px;
+        }
+        
+        .feature-list li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #555;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .feature-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #28a745;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,123,255,0.4);
+            background: linear-gradient(135deg, #0056b3, #004085);
+        }
+        
+        .team-section {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .team-section h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #1a2a6c;
+            font-size: 2.2rem;
+        }
+        
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .team-member {
+            text-align: center;
+            width: 250px;
+        }
+        
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .team-member h3 {
+            font-size: 1.3rem;
+            color: #1a2a6c;
+            margin-bottom: 5px;
+        }
+        
+        .team-member p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Values Section */
+        .values-section {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .values-section h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #1a2a6c;
+            font-size: 2.2rem;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .value-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .value-card i {
+            font-size: 2.5rem;
+            color: #e94560;
+            margin-bottom: 20px;
+        }
+        
+        .value-card h3 {
+            font-size: 1.3rem;
+            color: #1a2a6c;
+            margin-bottom: 15px;
+        }
+        
+        .value-card p {
+            color: #666;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #e94560;
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            opacity: 1;
+            color: #e94560;
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: #e94560;
+            transform: translateY(-3px);
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px 0 0 6px;
+        }
+        
+        .newsletter-form button {
+            padding: 12px 15px;
+            background-color: #e94560;
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: #d63447;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: #1a2a6c;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 20px 0;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .about-container {
+                padding: 30px 20px;
+            }
+            
+            .about-container h1 {
+                font-size: 2rem;
+            }
+            
+            .about-container h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navbar -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="logo-icon">AI</div>
+                <span>Latest Ai Tools</span>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'tools:list' %}">Home</a>
+                <a href="{% url 'submit' %}">Submit Tool</a>
+                <a href="{% url 'aboutus' %}" class="active">About</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'signup' %}">Sign Up</a>
+                {% endif %}
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>About Latest Ai Tools</h1>
+            <p>Discover our story, mission, and vision for revolutionizing how people find and use AI tools</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-container">
+                <h1>Our Story</h1>
+                
+                <p>Welcome to <strong>Latest Ai Tools</strong>! We are dedicated to helping enthusiasts, developers, marketers, designers, and businesses discover the best AI tools, apps, and software available online. Our platform allows users to explore, upvote, and share AI tools across various categories including productivity, marketing, design, development, finance, and education.</p>
+
+                <h2><i class="fas fa-bullseye"></i> Our Mission</h2>
+                <p>Our mission is to simplify the discovery of high-quality AI tools and software. We want to provide a reliable, user-friendly platform where users can find free, premium, and freemium tools, and make informed decisions quickly. We believe that the right AI tools can transform businesses and empower individuals to achieve more with less effort.</p>
+
+                <h2><i class="fas fa-eye"></i> Our Vision</h2>
+                <p>We envision a world where AI tools are accessible to everyone. By creating a community-driven platform, we aim to highlight the most useful tools based on real user feedback and upvotes, helping people save time and enhance productivity. Our goal is to become the go-to resource for anyone looking to leverage artificial intelligence in their personal or professional life.</p>
+
+                <h2><i class="fas fa-gift"></i> What We Offer</h2>
+                <ul class="feature-list">
+                    <li>Curated collection of AI tools across multiple categories.</li>
+                    <li>Upvote and feedback system to highlight popular and effective tools.</li>
+                    <li>Direct links to official websites for easy access and usage.</li>
+                    <li>SEO-friendly interface to ensure you discover trending AI solutions effortlessly.</li>
+                    <li>Regularly updated database with the latest AI innovations.</li>
+                </ul>
+
+                <h2><i class="fas fa-users"></i> Get Involved</h2>
+                <p>You can contribute by submitting your favorite tools, upvoting the tools you love, and sharing Latest Ai Tools with your friends and colleagues. Your participation helps us keep the platform up-to-date and valuable for everyone. Together, we can build a community that drives innovation and makes AI technology more accessible to all.</p>
+
+                <div style="text-align: center;">
+                    <a class="cta-button" href="{% url 'tools:list' %}">Explore AI Tools</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <h2>Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-search"></i>
+                    <h3>Discovery</h3>
+                    <p>We make it easy to discover innovative AI tools that can transform how you work and create.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community</h3>
+                    <p>We believe in the power of community to identify and promote the most valuable AI solutions.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Innovation</h3>
+                    <p>We continuously seek out and showcase cutting-edge AI technologies that push boundaries.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Trust</h3>
+                    <p>We provide honest, unbiased information to help you make informed decisions about AI tools.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Latest Ai Tools</h3>
+                    <p>Latest Ai Tools is the leading directory for discovering and evaluating artificial intelligence tools across all industries. Our mission is to help businesses and professionals leverage AI technology to drive innovation and growth.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'tools:list' %}">Home</a></li>
+                        <li><a href="{% url 'submit' %}">Submit a Tool</a></li>
+                        <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Popular Categories</h3>
+                    <ul>
+                        <li><a href="?category=Productivity">Productivity</a></li>
+                        <li><a href="?category=Marketing">Marketing</a></li>
+                        <li><a href="?category=Design">Design</a></li>
+                        <li><a href="?category=Development">Development</a></li>
+                        <li><a href="?category=Writing">Writing</a></li>
+                        <li><a href="?category=Education">Education</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter to get updates on new AI tools and industry trends.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Latest Ai Tools. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Cookie Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+<script>
+// Mobile menu toggle
+const hamburger = document.querySelector('.hamburger');
+const navLinks = document.querySelector('.nav-links');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+</script>
+</body>
+</html>
