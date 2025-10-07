@@ -685,7 +685,7 @@
         </div>
     </section>
     
-    <!-- Tools Section - Critical above-the-fold content -->
+    <!-- 
     <section class="tools-section">
         <div class="container">
             <h2>Featured AI Tools</h2>
@@ -734,22 +734,23 @@
     
     <!-- Pagination -->
     <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?{% if search_query %}search={{ search_query }}&{% endif %}
-                      {% if selected_category %}category={{ selected_category }}&{% endif %}
-                      {% if selected_pricing %}pricing={{ selected_pricing }}&{% endif %}
-                      page={{ page_obj.previous_page_number }}">Previous</a>
-        {% endif %}
+  {% if page_obj.has_previous %}
+    <a href="?{% if search_query %}search={{ search_query }}&{% endif %}
+              {% if selected_category %}category={{ selected_category }}&{% endif %}
+              {% if selected_pricing %}pricing={{ selected_pricing }}&{% endif %}
+              page={{ page_obj.previous_page_number }}">Previous</a>
+  {% endif %}
 
-        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
-        {% if page_obj.has_next %}
-            <a href="?{% if search_query %}search={{ search_query }}&{% endif %}
-                      {% if selected_category %}category={{ selected_category }}&{% endif %}
-                      {% if selected_pricing %}pricing={{ selected_pricing }}&{% endif %}
-                      page={{ page_obj.next_page_number }}">Next</a>
-        {% endif %}
-    </div>
+  {% if page_obj.has_next %}
+    <a href="?{% if search_query %}search={{ search_query }}&{% endif %}
+              {% if selected_category %}category={{ selected_category }}&{% endif %}
+              {% if selected_pricing %}pricing={{ selected_pricing }}&{% endif %}
+              page={{ page_obj.next_page_number }}">Next</a>
+  {% endif %}
+</div>
+
 
     <!-- How It Works Section -->
     <section id="how-it-works" style="padding: 80px 0; background-color: white;">
@@ -1066,3 +1067,4 @@
 </script>
 </body>
 </html>
+
