@@ -732,24 +732,6 @@
         </div>
     </section>
     
-    <!-- Pagination -->
-    <div class="pagination">
-  {% if page_obj.has_previous %}
-    <a href="?{% if search_query %}search={{ search_query }}&{% endif %}
-              {% if selected_category %}category={{ selected_category }}&{% endif %}
-              {% if selected_pricing %}pricing={{ selected_pricing }}&{% endif %}
-              page={{ page_obj.previous_page_number }}">Previous</a>
-  {% endif %}
-
-  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-
-  {% if page_obj.has_next %}
-    <a href="?{% if search_query %}search={{ search_query }}&{% endif %}
-              {% if selected_category %}category={{ selected_category }}&{% endif %}
-              {% if selected_pricing %}pricing={{ selected_pricing }}&{% endif %}
-              page={{ page_obj.next_page_number }}">Next</a>
-  {% endif %}
-</div>
 
 
     <!-- How It Works Section -->
@@ -1067,5 +1049,6 @@
 </script>
 </body>
 </html>
+
 
 
